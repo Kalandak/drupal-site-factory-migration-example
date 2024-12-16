@@ -1,0 +1,13 @@
+id: d10_webform_embed_left
+label: "Migrate Webform Embed Left Column Paragraphs"
+migration_group: d10_migrations
+source:
+  plugin: custom_webform_embed_left
+process:
+  field_form_url: field_url
+
+destination:
+  plugin: "entity_reference_revisions:paragraph"
+  default_bundle: form_embed
+
+migration_dependencies: {}

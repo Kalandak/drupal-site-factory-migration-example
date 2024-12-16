@@ -1,0 +1,43 @@
+id: d10_sfr_files
+label: "Migrate Single Featured Resource file entities"
+migration_group: d10_migrations
+source:
+  plugin: custom_sfr_file_entities
+  constants:
+    drupal_file_dest: "public://"
+
+process:
+  destination_filename:
+    - plugin: callback
+      callable: basename
+      source: uri
+    - plugin: skip_on_empty
+      method: row
+      message: "Cannot import empty filename."
+
+  destination_full_path:
+    - plugin: concat
+      source:
+        - "constants/drupal_file_dest"
+        - "@destination_filename"
+    - plugin: urlencode
+
+  uri:
+    - plugin: file_exists_check
+      source: uri
+    - plugin: skip_on_empty
+      method: row
+      message: "File not found, skipping row."
+    - plugin: file_copy
+      source:
+        - "uri"
+        - "@destination_full_path"
+
+  uid:
+    plugin: default_value
+    default_value: 1
+
+destination:
+  plugin: "entity:file"
+
+migration_dependencies: {}

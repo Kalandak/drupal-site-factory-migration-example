@@ -1,0 +1,53 @@
+id: d10_csw
+label: "Migrate Content Slider"
+migration_group: d10_migrations
+source:
+  plugin: custom_paragraph_csw
+process:
+  # Paragraphs.
+  paragraph_text:
+    - plugin: migration_lookup
+      migration: d10_cs
+      source: field_slider_content_slide_target_id
+      no_stub: true
+    - plugin: null_as_array
+
+  field_ref_cards:
+    - plugin: sub_process
+      source:
+        - "@paragraph_text"
+      process:
+        skip_less_than_two:
+          plugin: skip_on_condition
+          source: field_slide_media
+          condition: less_than(2)
+          method: row
+          message: 'number of slides was less than 2'
+        target_id:
+          - plugin: skip_on_empty
+            method: process
+            message: "Cannot import empty paragraph"
+            source: "0"
+        target_revision_id:
+          - plugin: skip_on_empty
+            method: process
+            message: "Cannot import empty paragraph"
+            source: "1"
+
+  skip_empty_field_ref_cards:
+    plugin: skip_on_condition
+    source: field_ref_cards
+    condition: empty
+    method: row
+    message: "Field_ref_cards is empty. Skipping the paragraph."
+
+  field_title:
+    - plugin: default_value
+      default_value: "Title"
+
+destination:
+  plugin: "entity_reference_revisions:paragraph"
+  default_bundle: card_group
+migration_dependencies:
+  required:
+    - d10_cs

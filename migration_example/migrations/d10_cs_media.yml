@@ -1,0 +1,28 @@
+id: d10_cs_media
+label: "Migrate media entities"
+migration_group: d10_migrations
+source:
+  plugin: custom_cs_media_entities
+
+process:
+  name: field_media_image_alt
+  field_media_image/target_id:
+    - plugin: migration_lookup
+      migration: d10_cs_files
+      source: field_media_image_target_id
+      no_stub: true
+    - plugin: skip_on_empty
+      method: row
+  field_caption/value: field_media_image_alt
+  field_media_image/alt: field_media_image_alt
+  field_media_image/title: field_media_image_alt
+  uid:
+    plugin: default_value
+    default_value: 1
+
+destination:
+  plugin: "entity:media"
+  default_bundle: image
+migration_dependencies:
+  required:
+    - d10_cs_files

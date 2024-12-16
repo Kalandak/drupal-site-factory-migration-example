@@ -1,0 +1,7 @@
+paragraphs-listing:
+  path: '/migration-example/paragraphs-listing'
+  defaults:
+    _title: 'Paragraphs-listing'
+    _controller: '\Drupal\migration_example\Controller\MigrationExampleController'
+  requirements:
+    _permission: 'access content'

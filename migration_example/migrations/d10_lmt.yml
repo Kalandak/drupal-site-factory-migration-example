@@ -1,0 +1,25 @@
+id: d10_lmt
+label: "Migrate Large Media Tile Paragraphs"
+migration_group: d10_migrations
+source:
+  plugin: custom_paragraph_lmt
+process:
+  field_actions: field_call_to_action
+  field_description/value: field_tile_text/0
+  field_description/format:
+    - plugin: default_value
+      default_value: full
+  field_title: field_tile_title
+
+  field_media/target_id:
+    plugin: migration_lookup
+    migration: d10_lmt_media
+    source: field_media_component/0
+    no_stub: true
+
+destination:
+  plugin: "entity_reference_revisions:paragraph"
+  default_bundle: media_basic
+migration_dependencies:
+  required:
+    - d10_lmt_media

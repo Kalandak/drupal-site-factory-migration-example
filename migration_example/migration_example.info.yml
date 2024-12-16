@@ -1,0 +1,11 @@
+name: "Migration example files"
+type: module
+description: "Custom Site Factory to Site Factory migration files"
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:migrate
+  - drupal:migrate_drupal_d8
+  - drupal:migrate_plus
+  - drupal:migrate_tools
+  - drupal:migrate_conditions
